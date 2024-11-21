@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot name="realsense2_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="use_nominal_extrinsics" default="false"/>
+  <xacro:arg name="add_plug" default="false" />
+  <xacro:arg name="use_mesh" default="true" />
+
+  <!-- Include the main Realsense D435 URDF definition -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+  <!-- Include the updated Gazebo-specific Xacro file -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.gazebo.xacro" />
+
+  <!-- Instantiate the Realsense Camera -->
+  <xacro:sensor_d435 parent="world" name="d435" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
+    <origin xyz="0 0 1.1" rpy="0 1.5708 0"/>
+
+  </xacro:sensor_d435>
+
+  <!-- Instantiate the Gazebo sensors -->
+  <xacro:gazebo_d435 
+    camera_name="d435" 
+    reference_link="d435_link" 
+    topics_ns="d435" 
+    depth_optical_frame="d435_depth_optical_frame" 
+    color_optical_frame="d435_color_optical_frame" 
+    infrared1_optical_frame="d435_infra1_optical_frame" 
+    infrared2_optical_frame="d435_infra2_optical_frame" 
+    publish_pointcloud="true"/>
+</robot>
